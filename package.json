@@ -1,0 +1,23 @@
+{
+  "name": "slack_apps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "testSocketApp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yyosuke456/slack_apps.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yyosuke456/slack_apps/issues"
+  },
+  "homepage": "https://github.com/yyosuke456/slack_apps#readme",
+  "dependencies": {
+    "@slack/bolt": "^3.0.0"
+  }
+}
