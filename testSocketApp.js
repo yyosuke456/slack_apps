@@ -5,10 +5,8 @@ const { App } = require("@slack/bolt");
 const app = new App({
   logLevel: "debug", // これはログレベルの調整なので削除しても OK です
   socketMode: true,
-  token:
-    "xapp-1-A01JQQYLD27-1636645081314-c90c60993ae798c9ce864539b32dd5011584ec040673816acac8944e6b922afa",
-  appToken:
-    "xapp-1-A01JQQYLD27-1636645081314-c90c60993ae798c9ce864539b32dd5011584ec040673816acac8944e6b922afa",
+  token: "＊＊＊",
+  appToken: "＊＊＊",
 });
 
 // グローバルショートカット
