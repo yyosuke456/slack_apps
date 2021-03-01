@@ -12,19 +12,16 @@ plugins {
 }
 
 repositories {
-    // Use JCenter for resolving dependencies.
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    // Use JUnit test framework.
-    testImplementation 'junit:junit:4.13'
-
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:29.0-jre'
+  implementation("com.slack.api:bolt-socket-mode:1.5.0")
+  implementation("org.glassfish.tyrus.bundles:tyrus-standalone-client:1.17")
+  implementation("org.slf4j:slf4j-simple:1.7.30")
 }
 
 application {
     // Define the main class for the application.
-    mainClass = 'slack.socket.app.App'
+    mainClass = 'slack.socket.app.MyApp'
 }

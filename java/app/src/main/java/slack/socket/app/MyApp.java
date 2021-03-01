@@ -14,7 +14,7 @@ import static com.slack.api.model.block.composition.BlockCompositions.plainText;
 import static com.slack.api.model.block.element.BlockElements.plainTextInput;
 import static com.slack.api.model.view.Views.*;
 
-public class App {
+public class MyApp {
   public static void main(String[] args) throws Exception {
     System.setProperty("org.slf4j.simpleLogger.log.com.slack.api", "debug");
 
