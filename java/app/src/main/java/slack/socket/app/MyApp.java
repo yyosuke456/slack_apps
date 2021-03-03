@@ -27,6 +27,41 @@ public class MyApp {
       return ctx.ack();
     });
 
+    app.message(":wave:", (payload, ctx) -> {
+      ctx.say("Hello, <@" + payload.getEvent().getUser() + ">");
+      return ctx.ack();
+    });
+    // メッセージがモニタリング対象のキーワードを含むか確認
+/*    Pattern sdk = Pattern.compile(".*[(Java SDK)|(Bolt)|(slack\\-java\\-sdk)].*", Pattern.CASE_INSENSITIVE);
+    app.message(sdk, (payload, ctx) -> {
+      MessageEvent event = payload.getEvent();
+      String text = event.getText();
+      MethodsClient client = ctx.client();
+    
+      // 👀 のリアクション絵文字をメッセージにつける
+      String channelId = event.getChannel();
+      String ts = event.getTs();
+      ReactionsAddResponse reaction = client.reactionsAdd(r -> r.channel(channelId).timestamp(ts).name("eyes"));
+      if (!reaction.isOk()) {
+        ctx.logger.error("reactions.add failed: {}", reaction.getError());
+      }
+    
+      // SDK の作者に通知メッセージを送る
+      ChatGetPermalinkResponse permalink = client.chatGetPermalink(r -> r.channel(channelId).messageTs(ts));
+      if (permalink.isOk()) {
+        ChatPostMessageResponse message = client.chatPostMessage(r -> r
+          .channel(notificationChannelId)
+          .text("An issue with the Java SDK might be reported:\n" + permalink.getPermalink())
+          .unfurlLinks(true));
+        if (!message.isOk()) {
+          ctx.logger.error("chat.postMessage failed: {}", message.getError());
+        }
+      } else {
+        ctx.logger.error("chat.getPermalink failed: {}", permalink.getError());
+      }
+      return ctx.ack();
+    });
+*/
     // ショートカットとモーダル
     app.globalShortcut("socket-mode-shortcut", (req, ctx) -> {
       View modalView = view(v -> v
