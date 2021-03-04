@@ -31,6 +31,10 @@ public class MyApp {
       ctx.say("Hello, <@" + payload.getEvent().getUser() + ">");
       return ctx.ack();
     });
+    app.message("おはよう", (payload, ctx) -> {
+      ctx.say("おやほう, <@" + payload.getEvent().getUser() + ">");
+      return ctx.ack();
+    });
     // メッセージがモニタリング対象のキーワードを含むか確認
 /*    Pattern sdk = Pattern.compile(".*[(Java SDK)|(Bolt)|(slack\\-java\\-sdk)].*", Pattern.CASE_INSENSITIVE);
     app.message(sdk, (payload, ctx) -> {
