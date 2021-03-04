@@ -14,6 +14,16 @@ import static com.slack.api.model.block.composition.BlockCompositions.plainText;
 import static com.slack.api.model.block.element.BlockElements.plainTextInput;
 import static com.slack.api.model.view.Views.*;
 
+import com.slack.api.methods.MethodsClient;
+import com.slack.api.methods.response.chat.ChatGetPermalinkResponse;
+import com.slack.api.methods.response.chat.ChatPostMessageResponse;
+import com.slack.api.methods.response.reactions.ReactionsAddResponse;
+import com.slack.api.model.event.MessageEvent;
+
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
+
 public class MyApp {
   public static void main(String[] args) throws Exception {
     System.setProperty("org.slf4j.simpleLogger.log.com.slack.api", "debug");
@@ -27,16 +37,9 @@ public class MyApp {
       return ctx.ack();
     });
 
-    app.message(":wave:", (payload, ctx) -> {
-      ctx.say("Hello, <@" + payload.getEvent().getUser() + ">");
-      return ctx.ack();
-    });
-    app.message("おはよう", (payload, ctx) -> {
-      ctx.say("おやほう, <@" + payload.getEvent().getUser() + ">");
-      return ctx.ack();
-    });
+    String notificationChannelId ="CDWP2MA9Z";
     // メッセージがモニタリング対象のキーワードを含むか確認
-/*    Pattern sdk = Pattern.compile(".*[(Java SDK)|(Bolt)|(slack\\-java\\-sdk)].*", Pattern.CASE_INSENSITIVE);
+    Pattern sdk = Pattern.compile(".*[(Java SDK)|(Bolt)|(slack\\-java\\-sdk)].*", Pattern.CASE_INSENSITIVE);
     app.message(sdk, (payload, ctx) -> {
       MessageEvent event = payload.getEvent();
       String text = event.getText();
@@ -65,7 +68,7 @@ public class MyApp {
       }
       return ctx.ack();
     });
-*/
+
     // ショートカットとモーダル
     app.globalShortcut("socket-mode-shortcut", (req, ctx) -> {
       View modalView = view(v -> v
