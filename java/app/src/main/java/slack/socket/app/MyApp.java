@@ -19,6 +19,7 @@ import com.slack.api.methods.response.chat.ChatGetPermalinkResponse;
 import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 import com.slack.api.methods.response.reactions.ReactionsAddResponse;
 import com.slack.api.model.event.MessageEvent;
+import com.slack.api.model.event.ReactionAddedEvent;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -31,9 +32,17 @@ public class MyApp {
     // SLACK_BOT_TOKEN という環境変数が設定されている前提
     App app = new App();
 
-    // イベント API
-    app.event(MessageEvent.class, (req, ctx) -> {
-      ctx.say(":wave: こんにちは <@" + req.getEvent().getUser() + ">！");
+    app.event(ReactionAddedEvent.class, (payload, ctx) -> {
+      ReactionAddedEvent event = payload.getEvent();
+      if (event.getReaction().equals("white_check_mark")) {
+        ChatPostMessageResponse message = ctx.client().chatPostMessage(r -> r
+          .channel(event.getItem().getChannel())
+          .threadTs(event.getItem().getTs())
+          .text("<@" + event.getUser() + "> ご対応いただき、本当にありがとうございました :two_hearts:"));
+        if (!message.isOk()) {
+          ctx.logger.error("chat.postMessage failed: {}", message.getError());
+        }
+      }
       return ctx.ack();
     });
 
