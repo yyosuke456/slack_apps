@@ -46,63 +46,6 @@ public class MyApp {
       return ctx.ack();
     });
 
-    String notificationChannelId ="CDWP2MA9Z";
-    // メッセージがモニタリング対象のキーワードを含むか確認
-    Pattern sdk = Pattern.compile(".*[(Java SDK)|(Bolt)|(slack\\-java\\-sdk)].*", Pattern.CASE_INSENSITIVE);
-    app.message(sdk, (payload, ctx) -> {
-      MessageEvent event = payload.getEvent();
-      String text = event.getText();
-      MethodsClient client = ctx.client();
-    
-      // 👀 のリアクション絵文字をメッセージにつける
-      String channelId = event.getChannel();
-      String ts = event.getTs();
-      ReactionsAddResponse reaction = client.reactionsAdd(r -> r.channel(channelId).timestamp(ts).name("eyes"));
-      if (!reaction.isOk()) {
-        ctx.logger.error("reactions.add failed: {}", reaction.getError());
-      }
-    
-      // SDK の作者に通知メッセージを送る
-      ChatGetPermalinkResponse permalink = client.chatGetPermalink(r -> r.channel(channelId).messageTs(ts));
-      if (permalink.isOk()) {
-        ChatPostMessageResponse message = client.chatPostMessage(r -> r
-          .channel(notificationChannelId)
-          .text("An issue with the Java SDK might be reported:\n" + permalink.getPermalink())
-          .unfurlLinks(true));
-        if (!message.isOk()) {
-          ctx.logger.error("chat.postMessage failed: {}", message.getError());
-        }
-      } else {
-        ctx.logger.error("chat.getPermalink failed: {}", permalink.getError());
-      }
-      return ctx.ack();
-    });
-
-    // ショートカットとモーダル
-    app.globalShortcut("socket-mode-shortcut", (req, ctx) -> {
-      View modalView = view(v -> v
-        .type("modal")
-        .callbackId("modal-id")
-        .title(viewTitle(title -> title.type("plain_text").text("タスク登録").emoji(true)))
-        .submit(viewSubmit(submit -> submit.type("plain_text").text("送信").emoji(true)))
-        .close(viewClose(close -> close.type("plain_text").text("キャンセル").emoji(true)))
-        .blocks(asBlocks(input(i -> i
-          .blockId("input-task")
-          .element(plainTextInput(pti -> pti.actionId("input").multiline(true)))
-          .label(plainText(pt -> pt.text("タスクの詳細・期限などを書いてください")))
-        )))
-      );
-      ctx.asyncClient().viewsOpen(r -> r
-        .triggerId(req.getPayload().getTriggerId())
-        .view(modalView)
-      );
-      return ctx.ack();
-    });
-    app.viewSubmission("modal-id", (req, ctx) -> {
-      ctx.logger.info("Submitted data: {}", req.getPayload().getView().getState().getValues());
-      return ctx.ack();
-    });
-
     // SLACK_APP_TOKEN という環境変数が設定されている前提
     new SocketModeApp(app).start();
   }
