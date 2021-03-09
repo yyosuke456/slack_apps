@@ -7,36 +7,22 @@
  */
 
 plugins {
-    // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    id 'org.jetbrains.kotlin.jvm' version '1.4.20'
-
-    // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+  id("org.jetbrains.kotlin.jvm") version "1.4.21-2"
+  id("application")
 }
-
 repositories {
-    // Use JCenter for resolving dependencies.
-    jcenter()
+  mavenCentral()
 }
-
 dependencies {
-    // Align versions of all Kotlin components
-    implementation platform('org.jetbrains.kotlin:kotlin-bom')
-
-    // Use the Kotlin JDK 8 standard library.
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:29.0-jre'
-
-    // Use the Kotlin test library.
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
-
-    // Use the Kotlin JUnit integration.
-    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+  implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+  implementation("com.slack.api:bolt-socket-mode:1.5.0")
+  implementation("com.slack.api:slack-api-model-kotlin-extension:1.5.0")
+  implementation("org.glassfish.tyrus.bundles:tyrus-standalone-client:1.17")
+  implementation("org.slf4j:slf4j-simple:1.7.30") // または logback-classic など
 }
 
 application {
     // Define the main class for the application.
-    mainClass = 'kotlin_test.AppKt'
+    mainClass = 'MyAppKt'
 }
