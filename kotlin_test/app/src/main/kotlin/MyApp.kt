@@ -12,9 +12,11 @@ fun main() {
 
   // イベント API
   app.event(MessageEvent::class.java) { req, ctx ->
+    req.event.
     ctx.say("こんにちは <@" + req.event.user + ">！")
     ctx.ack()
   }
+
 
   // ショートカットとモーダル
   app.globalShortcut("socket-mode-shortcut") { req, ctx ->
