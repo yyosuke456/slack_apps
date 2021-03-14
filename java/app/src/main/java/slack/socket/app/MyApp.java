@@ -32,6 +32,11 @@ public class MyApp {
     // SLACK_BOT_TOKEN という環境変数が設定されている前提
     App app = new App();
 
+    app.message("湯婆婆", (req, ctx) -> {
+      ctx.say(":wave: 贅沢な名だねえ <@" + req.getEvent().getUser() + ">！");
+      system.out.println(req.getEven());
+      return ctx.ack();
+    });
     app.event(ReactionAddedEvent.class, (payload, ctx) -> {
       ReactionAddedEvent event = payload.getEvent();
       if (event.getReaction().equals("white_check_mark")) {
