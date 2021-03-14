@@ -34,7 +34,15 @@ public class MyApp {
 
     app.message("湯婆婆", (req, ctx) -> {
       ctx.say(":wave: 贅沢な名だねえ <@" + req.getEvent().getUser() + ">！");
-      system.out.println(req.getEven());
+      return ctx.ack();
+    });
+
+    app.message("ここで働かせてください！", (req, ctx) -> {
+      ctx.say("<@" + req.getEvent().getUser() + ">なんであたしがおまえを雇わなきゃならないんだい！？見るからにグズで！甘ったれで！泣き虫で！頭の悪い小娘に、仕事なんかあるもんかね！お断りだね。これ以上穀潰しを増やしてどうしようっていうんだい！それとも……一番つらーーいきつーーい仕事を死ぬまでやらせてやろうかぁ……？");
+      return ctx.ack();
+    });
+    app.message("ここで働きたいんです！", (req, ctx) -> {
+      ctx.say("<@" + req.getEvent().getUser() + ">わかったから静かにしておくれ！おおぉお～よ～しよし～……	契約書だよ。そこに名前を書きな。働かせてやる。その代わり嫌だとか、帰りたいとか言ったらすぐ子豚にしてやるからね。");
       return ctx.ack();
     });
     app.event(ReactionAddedEvent.class, (payload, ctx) -> {
