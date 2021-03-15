@@ -32,11 +32,6 @@ public class MyApp {
     // SLACK_BOT_TOKEN という環境変数が設定されている前提
     App app = new App();
 
-    app.message("湯婆婆", (req, ctx) -> {
-      ctx.say(":wave: 贅沢な名だねえ <@" + req.getEvent().getUser() + ">！");
-      return ctx.ack();
-    });
-
     app.message("ここで働かせてください！", (req, ctx) -> {
       ctx.say("<@" + req.getEvent().getUser() + ">なんであたしがおまえを雇わなきゃならないんだい！？見るからにグズで！甘ったれで！泣き虫で！頭の悪い小娘に、仕事なんかあるもんかね！お断りだね。これ以上穀潰しを増やしてどうしようっていうんだい！それとも……一番つらーーいきつーーい仕事を死ぬまでやらせてやろうかぁ……？");
       return ctx.ack();
