@@ -32,24 +32,19 @@ public class MyApp {
     // SLACK_BOT_TOKEN という環境変数が設定されている前提
     App app = new App();
 
-    app.message("ここで働かせてください！", (req, ctx) -> {
-      ctx.say("<@" + req.getEvent().getUser() + ">なんであたしがおまえを雇わなきゃならないんだい！？見るからにグズで！甘ったれで！泣き虫で！頭の悪い小娘に、仕事なんかあるもんかね！お断りだね。これ以上穀潰しを増やしてどうしようっていうんだい！それとも……一番つらーーいきつーーい仕事を死ぬまでやらせてやろうかぁ……？");
-      return ctx.ack();
-    });
-    app.message("ここで働きたいんです！", (req, ctx) -> {
-      ctx.say("<@" + req.getEvent().getUser() + ">わかったから静かにしておくれ！おおぉお～よ～しよし～……	契約書だよ。そこに名前を書きな。働かせてやる。その代わり嫌だとか、帰りたいとか言ったらすぐ子豚にしてやるからね。");
-      return ctx.ack();
-    });
-    app.event(ReactionAddedEvent.class, (payload, ctx) -> {
-      ReactionAddedEvent event = payload.getEvent();
-      if (event.getReaction().equals("white_check_mark")) {
-        ChatPostMessageResponse message = ctx.client().chatPostMessage(r -> r
-          .channel(event.getItem().getChannel())
-          .threadTs(event.getItem().getTs())
-          .text("<@" + event.getUser() + "> ご対応いただき、本当にありがとうございました :two_hearts:"));
-        if (!message.isOk()) {
-          ctx.logger.error("chat.postMessage failed: {}", message.getError());
-        }
+    // メッセージがモニタリング対象のキーワードを含むか確認
+    Pattern sdk = Pattern.compile(".*[(Java SDK)|(Bolt)|(slack\\-java\\-sdk)].*", Pattern.CASE_INSENSITIVE);
+    app.message(sdk, (payload, ctx) -> {
+      MessageEvent event = payload.getEvent();
+      String text = event.getText();
+      MethodsClient client = ctx.client();
+
+      // 👀 のリアクション絵文字をメッセージにつける
+      String channelId = event.getChannel();
+      String ts = event.getTs();
+      ReactionsAddResponse reaction = client.reactionsAdd(r -> r.channel(channelId).timestamp(ts).name("eyes"));
+      if (!reaction.isOk()) {
+        ctx.logger.error("reactions.add failed: {}", reaction.getError());
       }
       return ctx.ack();
     });
